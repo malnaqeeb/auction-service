@@ -6,8 +6,13 @@ terraform {
   }
   required_version = ">= 0.13"
   backend "s3" {
-    bucket = "terraform-state"
-    key    =   "my-terraform-project"
-    region = "eu-west-1"
+    bucket                  = "terraform-my-own-project"
+    key                     = "my-terraform-project"
+    region                  = "eu-west-1"
+    shared_credentials_file = "~/.aws/credentials"
   }
+}
+provider "aws" {
+  region                  = "eu-west-1"
+  shared_credentials_file = "~/.aws/credentials"
 }
