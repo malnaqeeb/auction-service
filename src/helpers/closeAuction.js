@@ -10,3 +10,5 @@ export async function closeAuction(auction) {
   }
   return closedAuction;
 }
+
+//test
