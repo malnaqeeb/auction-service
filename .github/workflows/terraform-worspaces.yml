@@ -25,11 +25,7 @@ jobs:
       - name: setup Terraform
         uses: hashicorp/setup-terraform@v1
 
-      - name: plan
-        shell: bash
-        run: 
-          cd infra/terraform && terraform init  && terraform plan  && terraform output  --json > output.json
       - name: deploy
         shell: bash
         run: 
-          terraform apply -input=false -auto-approve                 
+          cd infra/terraform && terraform init  && terraform plan  && terraform output  --json > output.json && terraform apply -input=false -auto-approve           
