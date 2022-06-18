@@ -18,15 +18,17 @@ resource "aws_dynamodb_table" "auction" {
     type = "S"
   }
 
-  global_secondary_index {
-    name            = "statusAndEndDate"
-    hash_key        = "status"
-    range_key       = "endingAt"
-    write_capacity  = 10
-    read_capacity   = 10
-    projection_type = "ALL"
+  global_secondary_index = [
+    {
+      name            = "statusAndEndDate"
+      hash_key        = "status"
+      range_key       = "endingAt"
+      write_capacity  = 10
+      read_capacity   = 10
+      projection_type = "ALL"
 
-  }
+    }
+  ]
 
   tags = {
     Environment = "${var.stage}"
