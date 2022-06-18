@@ -25,6 +25,7 @@ jobs:
 
       - name: Terraform Workflow
         working-directory: aws_s3_bucket
+        shell: bash
         run: 
           terrform init 
           terraform workspace new ${{env.environment}}
