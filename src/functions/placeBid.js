@@ -1,54 +1,61 @@
-import AWS from 'aws-sdk';
 import createError from 'http-errors';
-import { getAuctionById } from './getAuction';
 
-const dynamodb = new AWS.DynamoDB.DocumentClient();
+const { getAuctionById, makePlaceBid } = require('../repositories/auction');
+const { mapper } = require('../repositories/mapper');
 
 async function placeBid(event, context) {
   const { id } = event.pathParameters;
-  const { amount, email } = event.body;
-
-  const auction = await getAuctionById(id);
+  const { amount, email } = JSON.parse(event.body);
+  const auction = await getAuctionById(mapper, id);
 
   // Bid identity validation
   if (email === auction.seller) {
-    throw new createError.Forbidden(`You cannot bid on your own auctions!`);
+    return {
+      statusCode: 403,
+      body: JSON.stringify({
+        msg: 'You cannot bid on your own auctions!',
+      }),
+    };
   }
-
   // Avoid double bidding
   if (email === auction.highestBid.bidder) {
-    throw new createError.Forbidden(`You are already the highest bidder`);
+    console.log(
+      'email === auction.highestBid.bidder',
+      email,
+      auction.highestBid.bidder
+    );
+    return {
+      statusCode: 403,
+      body: JSON.stringify({
+        msg: `You are already the highest bidder`,
+      }),
+    };
   }
 
   // Auction status validation
   if (auction.status !== 'OPEN') {
-    throw new createError.Forbidden(`You cannot bid on closed auctions!`);
+    return {
+      statusCode: 403,
+      body: JSON.stringify({
+        msg: `You cannot bid on closed auctions!`,
+      }),
+    };
   }
 
   // Bid amount validation
   if (amount <= auction.highestBid.amount) {
-    throw new createError.Forbidden(
-      `Your bid must be higher than ${auction.highestBid.amount}!`
-    );
+    return {
+      statusCode: 403,
+      body: JSON.stringify({
+        msg: `Your bid must be higher than ${auction.highestBid.amount}!`,
+      }),
+    };
   }
-
-  const params = {
-    TableName: process.env.AUCTIONS_TABLE_NAME,
-    Key: { id },
-    UpdateExpression:
-      'set highestBid.amount = :amount, highestBid.bidder = :bidder',
-    ExpressionAttributeValues: {
-      ':amount': amount,
-      ':bidder': email,
-    },
-    ReturnValues: 'ALL_NEW',
-  };
-
   let updatedAuction;
 
   try {
-    const result = await dynamodb.update(params).promise();
-    updatedAuction = result.Attributes;
+    const result = await makePlaceBid(mapper, id, amount, email, auction);
+    updatedAuction = result;
   } catch (error) {
     console.error(error);
     throw new createError.InternalServerError(error);
