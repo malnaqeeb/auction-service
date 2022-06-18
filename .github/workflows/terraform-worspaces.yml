@@ -28,6 +28,8 @@ jobs:
       - name: plan
         shell: bash
         run: 
-          cd infra/terraform && terraform init  && terraform plan && terraform apply -input=false -auto-approve 
-                
-
+          cd infra/terraform && terraform init  && terraform plan && mkdir -p dev && terraform output --json > dev/output.json
+      - name: plan
+        shell: bash
+        run: 
+          terraform apply -input=false -auto-approve                 
