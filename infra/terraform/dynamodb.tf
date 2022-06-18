@@ -1,5 +1,5 @@
 resource "aws_dynamodb_table" "auction" {
-  name         = "tf-${var.stage}-auctions"
+  name         = "tf-${var.stage}-auctions1"
   billing_mode = "PAY_PER_REQUEST"
   hash_key     = "id"
 
