@@ -1,0 +1,12 @@
+{
+  "dynamodb-table-arn": {
+    "sensitive": false,
+    "type": "string",
+    "value": "arn:aws:dynamodb:eu-west-1:299579995471:table/tf-dev-auctions"
+  },
+  "dynamodb-table-name": {
+    "sensitive": false,
+    "type": "string",
+    "value": "tf-dev-auctions"
+  }
+}

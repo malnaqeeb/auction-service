@@ -1,7 +1,9 @@
 name: Terraform workspace
 
 on:
-  workflow_dispatch:
+  push:
+  pull_request:
+    types: [opened]
 
 jobs:
   deploy:
@@ -23,9 +25,14 @@ jobs:
       - name: setup Terraform
         uses: hashicorp/setup-terraform@v1
 
-      - name: Terraform Workflow
+      - name: deploy
         shell: bash
         run: 
-          cd infra/terraform && terraform init  && terraform plan && terraform apply -input=false -auto-approve
-          
-
+          cd infra/terraform && terraform init  && terraform plan && terraform apply -input=false -auto-approve && terraform output --json > output.json
+      - name: 'Upload Artifact'
+        uses: actions/upload-artifact@v3
+        with:
+          name: plan-artifacts
+          path: infra/terraform/output.json
+        
+                

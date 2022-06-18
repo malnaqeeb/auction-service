@@ -2,7 +2,6 @@ resource "aws_dynamodb_table" "auction" {
   name         = "tf-${var.stage}-auctions"
   billing_mode = "PAY_PER_REQUEST"
   hash_key     = "id"
-
   attribute {
     name = "id"
     type = "S"
@@ -19,13 +18,11 @@ resource "aws_dynamodb_table" "auction" {
   }
 
   global_secondary_index {
-    name            = "statusAndEndDate"
-    hash_key        = "status"
-    range_key       = "endingAt"
-    write_capacity  = 10
-    read_capacity   = 10
-    projection_type = "ALL"
-
+    hash_key           = "status"
+    name               = "statusAndEndDate"
+    non_key_attributes = []
+    projection_type    = "ALL"
+    range_key          = "endingAt"
   }
 
   tags = {
