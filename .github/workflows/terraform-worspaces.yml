@@ -27,7 +27,9 @@ jobs:
         working-directory: aws_s3_bucket
         shell: bash
         run: 
+          cd infra/terraform
           terrform init 
           terraform workspace new ${{env.environment}}
           terraform workspace select ${{env.environment}} && terrform plan
-          terraform workspace select ${{env.environment}} && terraform apply 
+          terraform workspace select ${{env.environment}} && terraform apply
+          cd ../..
