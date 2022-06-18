@@ -28,7 +28,7 @@ jobs:
       - name: plan
         shell: bash
         run: 
-          cd infra/terraform && terraform init  && terraform plan  && terraform -out --json > dev/output.json
+          cd infra/terraform && terraform init  && terraform plan  && terraform -out --json > output.json
       - name: deploy
         shell: bash
         run: 
