@@ -19,13 +19,13 @@ resource "aws_dynamodb_table" "auction" {
   }
 
   global_secondary_index {
-    name               = "statusAndEndDate"
     hash_key           = "status"
-    range_key          = "endingAt"
-    write_capacity     = 10
-    read_capacity      = 10
-    projection_type    = "ALL"
+    name               = "statusAndEndDate"
     non_key_attributes = []
+    projection_type    = "ALL"
+    range_key          = "endingAt"
+    read_capacity      = 10
+    write_capacity     = 10
 
   }
 
