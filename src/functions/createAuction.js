@@ -10,6 +10,7 @@ async function createAuction(event, context) {
   const endDate = new Date();
   endDate.setHours(now.getHours() + 1);
   //tet
+
   const auction = {
     id: uuid(),
     title,

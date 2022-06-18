@@ -1,0 +1,32 @@
+name: Terraform workspace
+
+on:
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    name: Deploy
+    runs-on: ubuntu-latest
+    env:
+      environment: dev
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Configure AWS credentilas
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{secrets.AWS_ACCESS_KEY_ID}}
+          aws-secret-access-key: ${{secrets.AWS_SECRET_ACCESS_KEY}}
+          aws-region: eu-west-1
+      - name: setup Terraform
+        uses: hashicorp/setup-terraform@v1
+
+      - name: Terraform Workflow
+        working-directory: aws_s3_bucket
+        run: 
+          terrform init 
+          terraform workspace new ${{env.environment}}
+          terraform workspace select ${{env.environment}} && terrform plan
+          terraform workspace select ${{env.environment}} && terraform apply 
