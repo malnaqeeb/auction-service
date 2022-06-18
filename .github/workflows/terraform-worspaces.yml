@@ -28,7 +28,7 @@ jobs:
       - name: plan
         shell: bash
         run: 
-          cd infra/terraform && terraform init  && terraform plan && terraform apply -input=false -auto-approve
+          cd infra/terraform && terraform init  && terraform plan 
 
       - name: deploy
         shell: bash
