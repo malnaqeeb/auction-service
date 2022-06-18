@@ -24,7 +24,7 @@ jobs:
         uses: hashicorp/setup-terraform@v1
 
       - name: Terraform Workflow
-        working-directory: cd infra/terraform
+        working-directory:  infra
         shell: bash
         run: 
 
