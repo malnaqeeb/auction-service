@@ -18,7 +18,7 @@ resource "aws_dynamodb_table" "auction" {
     type = "S"
   }
 
-  global_secondary_index = [
+  global_secondary_indexes  = [
     {
       name            = "statusAndEndDate"
       hash_key        = "status"
