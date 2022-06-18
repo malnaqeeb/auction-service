@@ -9,3 +9,14 @@ AuctionsTableIAM:
   Resource:
     - ${self:custom.AuctionsTable.arn}
     - !Join ['/', [ '${self:custom.AuctionsTable.arn}', 'index', 'statusAndEndDate' ]]
+NewAuctionsTableIAM:
+  Effect: Allow
+  Action:
+    - dynamodb:PutItem
+    - dynamodb:Scan
+    - dynamodb:GetItem
+    - dynamodb:UpdateItem
+    - dynamodb:Query
+  Resource:
+    - ${terraform:${self:custom.tf_workspace}:dynamodb-table-arn}
+    - !Join ['/', [ '${self:custom.AuctionsTable.arn}', 'index', 'statusAndEndDate' ]]

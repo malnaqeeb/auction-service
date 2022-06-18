@@ -8,7 +8,7 @@ export class Auction {
   }
 
   get [DynamoDbTable]() {
-    return process.env.AUCTIONS_TABLE_NAME;
+    return process.env.DEV_AUCTIONS_TABLE_NAME;
   }
 
   get [DynamoDbSchema]() {
