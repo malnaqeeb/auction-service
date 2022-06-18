@@ -9,7 +9,7 @@ async function createAuction(event, context) {
   const now = new Date();
   const endDate = new Date();
   endDate.setHours(now.getHours() + 1);
-
+  //test
   const auction = {
     id: uuid(),
     title,
