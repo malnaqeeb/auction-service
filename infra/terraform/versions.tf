@@ -9,10 +9,8 @@ terraform {
     bucket = "terraform-my-own-project"
     key    = "my-terraform-project"
     region = "eu-west-1"
-    # shared_credentials_file = "~/.aws/credentials"
   }
 }
 provider "aws" {
   region = "eu-west-1"
-  # shared_credentials_file = "~/.aws/credentials"
 }
