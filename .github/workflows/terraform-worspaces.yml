@@ -24,12 +24,11 @@ jobs:
         uses: hashicorp/setup-terraform@v1
 
       - name: Terraform Workflow
-        working-directory:  infra
         shell: bash
         run: 
-
+          cd infra/terraform
           terraform init 
           terraform workspace new ${{env.environment}}
           terraform workspace select ${{env.environment}} && terraform plan
           terraform workspace select ${{env.environment}} && terraform apply
-     
+          cd ../..
