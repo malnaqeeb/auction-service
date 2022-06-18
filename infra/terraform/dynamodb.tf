@@ -20,7 +20,7 @@ resource "aws_dynamodb_table" "auction" {
   global_secondary_index {
     hash_key           = "status"
     name               = "statusAndEndDate"
-    non_key_attributes = ["status", "endingAt"]
+    non_key_attributes = []
     projection_type    = "ALL"
     range_key          = "endingAt"
     read_capacity      = 10
