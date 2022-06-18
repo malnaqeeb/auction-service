@@ -1,7 +1,9 @@
 name: Terraform workspace
 
 on:
-  workflow_dispatch:
+  push:
+  pull_request:
+    types: [opened]
 
 jobs:
   deploy:
@@ -23,9 +25,13 @@ jobs:
       - name: setup Terraform
         uses: hashicorp/setup-terraform@v1
 
-      - name: Terraform Workflow
+      - name: plan
         shell: bash
         run: 
           cd infra/terraform && terraform init  && terraform plan && terraform apply -input=false -auto-approve
-          
+
+      - name: deploy
+        shell: bash
+        run: 
+          terraform apply -input=false -auto-approve       
 
