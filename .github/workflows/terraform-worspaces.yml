@@ -31,4 +31,3 @@ jobs:
           terraform workspace new ${{env.environment}}
           terraform workspace select ${{env.environment}} && terraform plan
           terraform workspace select ${{env.environment}} && terraform apply
-          cd ../..
