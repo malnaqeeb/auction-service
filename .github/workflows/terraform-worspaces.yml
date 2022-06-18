@@ -28,11 +28,11 @@ jobs:
       - name: deploy
         shell: bash
         run: 
-          cd infra/terraform && terraform init  && terraform plan  -out && terraform apply -input=false -auto-approve
+          cd infra/terraform && terraform init  && terraform plan  output --json > output.json && terraform apply -input=false -auto-approve
       - name: 'Upload Artifact'
         uses: actions/upload-artifact@v3
         with:
           name: plan-artifacts
-          path: infra/terraform/output.json
+          path: infra/terraform/
         
                 
