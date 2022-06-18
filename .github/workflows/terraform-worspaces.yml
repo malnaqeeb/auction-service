@@ -26,6 +26,6 @@ jobs:
       - name: Terraform Workflow
         shell: bash
         run: 
-          cd infra/terraform && terraform init  && terraform plan 
+          cd infra/terraform && terraform init  && terraform plan && terraform apply 
           
 
