@@ -14,7 +14,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - name: Configure AWS credentilas
+      - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
           aws-access-key-id: ${{secrets.AWS_ACCESS_KEY_ID}}
@@ -24,9 +24,8 @@ jobs:
         uses: hashicorp/setup-terraform@v1
 
       - name: Terraform Workflow
-        working-directory: aws_s3_bucket
+        shell: bash
         run: 
-          terrform init 
-          terraform workspace new ${{env.environment}}
-          terraform workspace select ${{env.environment}} && terrform plan
-          terraform workspace select ${{env.environment}} && terraform apply 
+          cd infra/terraform && terraform init  && terraform plan && terraform apply -input=false -auto-approve
+          
+

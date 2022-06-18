@@ -1,11 +1,10 @@
 import { v4 as uuid } from 'uuid';
-import AWS from 'aws-sdk';
 import createError from 'http-errors';
-
-const dynamodb = new AWS.DynamoDB.DocumentClient();
+const { mapper } = require('../repositories/mapper');
+import { makeAuction } from '../repositories/auction';
 
 async function createAuction(event, context) {
-  const { title, email } = event.body;
+  const { title, email } = JSON.parse(event.body);
   const now = new Date();
   const endDate = new Date();
   endDate.setHours(now.getHours() + 1);
@@ -22,14 +21,9 @@ async function createAuction(event, context) {
     },
     seller: email,
   };
-
+  let createdAuction;
   try {
-    await dynamodb
-      .put({
-        TableName: process.env.AUCTIONS_TABLE_NAME,
-        Item: auction,
-      })
-      .promise();
+    createdAuction = await makeAuction(mapper, auction);
   } catch (error) {
     console.error(error);
     throw new createError.InternalServerError(error);
@@ -37,7 +31,7 @@ async function createAuction(event, context) {
 
   return {
     statusCode: 201,
-    body: JSON.stringify(auction),
+    body: JSON.stringify(createdAuction),
   };
 }
 

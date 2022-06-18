@@ -54,7 +54,11 @@ functions:
   processAuctions:
     handler: src/functions/processAuctions.handler
     events:
-      - schedule: rate(1 minute)
+    #   - schedule: rate(1 minute)
+      - http:
+          method: PATCH
+          path: /close-auction
+          cors: true
 custom:
   AuctionsTable:
     name: !Ref AuctionsTable
