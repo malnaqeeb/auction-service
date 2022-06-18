@@ -9,3 +9,6 @@ jspm_packages
 .webpack
 
 .terraform
+
+terraform.tfstate
+terraform.tfstate.backup
