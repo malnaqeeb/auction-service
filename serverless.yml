@@ -4,6 +4,7 @@ service:
 plugins:
   - serverless-bundle
   - serverless-pseudo-parameters
+  - serverless-aws-terraform-outputs
 
 provider:
   name: aws
@@ -12,12 +13,9 @@ provider:
   stage: ${opt:stage, 'dev'}
   region: eu-west-1
   environment:
-    AUCTIONS_TABLE_NAME: ${self:custom.AuctionsTable.name}
+    DEV_AUCTIONS_TABLE_NAME: ${terraform:${self:custom.tf_workspace}:dynamodb-table-name}
   iamRoleStatements:
-    - ${file(iam/AuctionsTableIAM.yml):AuctionsTableIAM}
-resources:
-  Resources:
-    AuctionsTable: ${file(resources/AuctionsTable.yml):AuctionsTable}
+    - ${file(iam/AuctionsTableIAM.yml):NewAuctionsTableIAM}
 functions:
   createAuction:
     handler: src/functions/createAuction.handler
@@ -60,8 +58,4 @@ functions:
           path: /close-auction
           cors: true
 custom:
-  AuctionsTable:
-    name: !Ref AuctionsTable
-    arn: !GetAtt AuctionsTable.Arn
-  bundle:
-    linting: false
+  tf_workspace: s3://terraform-my-own-project/my-terraform-project

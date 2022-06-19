@@ -1,4 +1,4 @@
-AuctionsTableIAM:
+NewAuctionsTableIAM:
   Effect: Allow
   Action:
     - dynamodb:PutItem
@@ -7,5 +7,5 @@ AuctionsTableIAM:
     - dynamodb:UpdateItem
     - dynamodb:Query
   Resource:
-    - ${self:custom.AuctionsTable.arn}
+    - ${terraform:${self:custom.tf_workspace}:dynamodb-table-arn}
     - !Join ['/', [ '${self:custom.AuctionsTable.arn}', 'index', 'statusAndEndDate' ]]
